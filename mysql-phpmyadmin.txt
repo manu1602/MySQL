@@ -1,0 +1,32 @@
+sudo su
+apt-get install aptitude -y
+apt-get update -y
+apt-get upgrade -y
+
+echo "installation de mysql-server"
+apt-get install mysql-server -y
+
+echo "user : root     password : root"
+
+mysql -u root -p
+ create database i3concept;
+ create user 'admin'@'localhost' identified by 'i3Concept';
+ grant all on i3concept.* to 'admin' identified by 'i3Concept';
+ exit
+ 
+ 
+apt-get install phpmyadmin -y
+
+echo "configuration du mot de passe de phpmyadmin"
+htpasswd /etc/phpmyadmin/htpasswd.setup admin
+
+echo "user : admin  password : admin"
+
+ln -s /usr/share/phpmyadmin/ /var/www/html/phpmyadmin
+
+/etc/init.d/apache2 restart
+
+echo "activer l'accès distant à la bdd "
+echo "commenter /* bind-address = 127.0.0.1 */ dans /etc/mysql/my.cnf"
+nano /etc/mysql/my.cnf
+/etc/init.d/mysql restart
